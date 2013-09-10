@@ -24,9 +24,6 @@ public class Toto extends Bidule {
   @Override
   protected void doAfterImpactByOther() {
     super.doAfterImpactByOther();
-    if (isGoDown())
-      goOnTop();
-
   }
 
   

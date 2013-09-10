@@ -291,7 +291,8 @@ public class Bidule extends JPanel {
    *         vide
    */
   private List<Bidule> getCollisions() {
-    return getBidulesProches(0);
+	
+	  return getBidulesProches(0);
   }
 
   /**
