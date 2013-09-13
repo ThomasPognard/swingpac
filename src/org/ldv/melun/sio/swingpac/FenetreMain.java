@@ -1,6 +1,8 @@
 package org.ldv.melun.sio.swingpac;
 
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -18,141 +20,172 @@ import javax.swing.Timer;
 import org.ldv.melun.sio.swingpac.utils.PackageUtil;
 
 /**
- * Définition de la scene du jeu et instanciation des objets. 
+ * Définition de la scene du jeu et instanciation des objets.
+ * 
  * @author lycée Léonard de Vinci - Melun - SIO-SLAM
  */
 public class FenetreMain extends JFrame implements ActionListener {
-  // une constante (mot clé final)
-  // c'est un moyen très pratique d'associer un écouteur d'événement
-  // à un générateur d'événement.
-  static final String ACTION_QUITTER = "Quitter";
+	// une constante (mot clé final)
+	// c'est un moyen très pratique d'associer un écouteur d'événement
+	// à un générateur d'événement.
+	static final String ACTION_QUITTER = "Quitter";
 
-  static final String ACTION_GO = "Go";
-  
-  static final String ACTION_PAUSE = "Pause";
+	static final String ACTION_GO = "Go";
 
-  private static final String PACKAGE_BIDULES = "org.ldv.melun.sio.swingpac.etudiants";
+	static final String ACTION_PAUSE = "Pause";
 
-  private static final int TAILLE_BIDULE = 30;
-  
-  private Timer timer;
+	private static final String PACKAGE_BIDULES = "org.ldv.melun.sio.swingpac.etudiants";
 
-  // constructeur
-  public FenetreMain() {
-    // appel un constructeur de son parent
-    super("SwingPac");
-    // effet : donne un titre à la fenêtre
+	private static final int TAILLE_BIDULE = 30;
 
-    // l'application s'arrête lorsque cette fenêtre sera fermée.
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	private Timer timer;
 
-    // pas de gestionnaire de positionnement
-    setLayout(null);
+	private String ACTION_REPRENDRE = "Reprendre";
 
-    // initialisation de la fenêtre
-    init();
-  }
+	// constructeur
+	public FenetreMain() {
+		// appel un constructeur de son parent
+		super("SwingPac");
+		// effet : donne un titre à la fenêtre
 
-  private void init() {
-    // on a besoin de créer une barre de menus
-    JMenuBar menuBar;
-    // et un menu
-    JMenu menuFichier;
+		// l'application s'arrête lorsque cette fenêtre sera fermée.
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-    // création dela barre de menus
-    menuBar = new JMenuBar();
-    // construisons le premier menu
-    menuFichier = new JMenu("Fichier");
-    menuFichier.setMnemonic(KeyEvent.VK_F);
-    menuFichier.getAccessibleContext().setAccessibleDescription(
-        "Menu permettant d'accéder à une commande pour quitter");
+		// pas de gestionnaire de positionnement
+		setLayout(null);
 
-    // création de la commande "quitter"
-    JMenuItem mnItemQuitter = new JMenuItem(ACTION_QUITTER, KeyEvent.VK_Q);
-    mnItemQuitter.getAccessibleContext().setAccessibleDescription(
-        "Quitter le programme");
+		// initialisation de la fenêtre
+		init();
+	}
 
-    // mnItemQuitter.setActionCommand(ACTION_QUITTER);
+	private void init() {
+		// on a besoin de créer une barre de menus
+		JMenuBar menuBar;
+		// et un menu
+		JMenu menuFichier;
 
-    // le menu Fichier contient la commande Quitter
-    menuFichier.add(mnItemQuitter);
-    // menu.addSeparator();
-    // la barre de menus contient le menu Fichier
-    menuBar.add(menuFichier);
-    JMenu jeu = new JMenu("Jeu");
-    jeu.setMnemonic(KeyEvent.VK_J);
-    JMenuItem mn = new JMenuItem("go", KeyEvent.VK_G);
-    mn.setActionCommand(ACTION_GO);
-    JMenuItem mn2 = new JMenuItem("pause", KeyEvent.VK_S);
-    mn2.setActionCommand(ACTION_PAUSE);
-    // l'instance de cette fenêtre est à l'écoute d'une action sur ce menu
-    mn.addActionListener(this);
-    jeu.add(mn);
-    jeu.add(mn2);
-    menuBar.add(jeu);
+		// création dela barre de menus
+		menuBar = new JMenuBar();
+		// construisons le premier menu
+		menuFichier = new JMenu("Fichier");
+		menuFichier.setMnemonic(KeyEvent.VK_F);
+		menuFichier.getAccessibleContext().setAccessibleDescription(
+				"Menu permettant d'accéder à une commande pour quitter");
 
-    // TODO : ajouter une commande Pause qui stoppe le timer de tous les objets
-    // Bidule.
+		// création de la commande "quitter"
+		JMenuItem mnItemQuitter = new JMenuItem(ACTION_QUITTER, KeyEvent.VK_Q);
+		mnItemQuitter.getAccessibleContext().setAccessibleDescription(
+				"Quitter le programme");
 
-    // on ajoute la barre de menu à la fenêtre
-    setJMenuBar(menuBar);
+		// mnItemQuitter.setActionCommand(ACTION_QUITTER);
 
-    // l'instance de cette fenêtre est à l'écoute d'une action sur ce menu
-    mnItemQuitter.addActionListener(this);
+		// le menu Fichier contient la commande Quitter
+		menuFichier.add(mnItemQuitter);
+		// menu.addSeparator();
+		// la barre de menus contient le menu Fichier
+		menuBar.add(menuFichier);
+		JMenu jeu = new JMenu("Jeu");
+		jeu.setMnemonic(KeyEvent.VK_J);
+		JMenuItem mn = new JMenuItem("Go", KeyEvent.VK_G);
+		mn.setActionCommand(ACTION_GO);
+		JMenuItem mn2 = new JMenuItem("Pause", KeyEvent.VK_P);
+		mn2.setActionCommand(ACTION_PAUSE);
+		JMenuItem mn3 = new JMenuItem("Reprendre", KeyEvent.VK_R);
+		mn3.setActionCommand(ACTION_REPRENDRE);
+		// l'instance de cette fenêtre est à l'écoute d'une action sur ce menu
+		mn.addActionListener(this);
+		mn2.addActionListener(this);
+		mn3.addActionListener(this);
+		jeu.add(mn);
+		jeu.add(mn2);
+		jeu.add(mn3);
+		menuBar.add(jeu); 
 
-    // TODO : définir une taille en fonction de la taille de l'écran
-    // par exemple le 1/4 de l'écran pour des grands écrans, ou 1/2 ...
-    setSize(500, 500);
+		// on ajoute la barre de menu à la fenêtre
+		setJMenuBar(menuBar);
 
-  }
-  /**
-   * Injecte des objets Bidule dans cette instance de fenêtre
-   */
-  private void go() {
-    // récupère la liste des classes du package en question
-    String[] classes = PackageUtil.getClasses(PACKAGE_BIDULES);
-    List<String> classesShuffles = Arrays.asList(classes);
-    
-    // change l'ordre des éléments dans le tableau
-    Collections.shuffle(classesShuffles);
-    System.out.println(classesShuffles);
-    
-    // on instancie les classes (un objet par class)
-    // et l'ajoute à la scene (fenetre)
-    String erreurs = "";
-    for (int i = 0; i < classesShuffles.size(); i++) {
-      try {
-        Bidule bidule = (Bidule) Class.forName(
-            PACKAGE_BIDULES + "." + classesShuffles.get(i)).newInstance();
-        bidule.setLocation(20 + i * TAILLE_BIDULE, +i * TAILLE_BIDULE);
+		// l'instance de cette fenêtre est à l'écoute d'une action sur ce menu
+		mnItemQuitter.addActionListener(this);
 
-        // ajout l'objet à la fenêtre
-        this.add(bidule);
-      } catch (Exception e) {
-        erreurs = e.getMessage();
-      }
-    }
-    if (!"".equals(erreurs))
-      JOptionPane.showMessageDialog(null, erreurs);
-  	}
-  
+		Toolkit t = this.getToolkit();
+		Dimension d = t.getScreenSize();
+		int w = d.width;
+		int h = d.height;
+		int Nw;
+		int Nh;
+		if (w > 1309 && h > 982) {
+			Nw = w / 2;
+			Nh = h;
+		} 
+		else {
+			Nw = w / 2;
+			Nh = h / 2;
+		}
+		setSize(Nw, Nh);
 
-  /**
-   * Appelé par les commandes du menu
-   */
-  public void actionPerformed(ActionEvent evt) {
-    String action = evt.getActionCommand();
+	}
 
-    if (action.equals(ACTION_QUITTER)) {
-      System.exit(0);
-    } 
-    	else if (action.equals(ACTION_GO)) {
-    		go();
-    	}
-    	else if (action.equals(ACTION_PAUSE)) {
-    		for (Component obj : getContentPane().getComponents());
-    		timer.stop();
-    	}
-  }
+	/**
+	 * Injecte des objets Bidule dans cette instance de fenêtre
+	 */
+	private void go() {
+		// récupère la liste des classes du package en question
+		String[] classes = PackageUtil.getClasses(PACKAGE_BIDULES);
+		List<String> classesShuffles = Arrays.asList(classes);
+
+		// change l'ordre des éléments dans le tableau
+		Collections.shuffle(classesShuffles);
+		System.out.println(classesShuffles);
+
+		// on instancie les classes (un objet par class)
+		// et l'ajoute à la scene (fenetre)
+		String erreurs = "";
+		for (int i = 0; i < classesShuffles.size(); i++) {
+			try {
+				Bidule bidule = (Bidule) Class.forName(
+						PACKAGE_BIDULES + "." + classesShuffles.get(i))
+						.newInstance();
+				bidule.setLocation(20 + i * TAILLE_BIDULE, +i * TAILLE_BIDULE);
+
+				// ajout l'objet à la fenêtre
+				this.add(bidule);
+			} catch (Exception e) {
+				erreurs = e.getMessage();
+			}
+		}
+		if (!"".equals(erreurs))
+			JOptionPane.showMessageDialog(null, erreurs);
+	}
+
+	/**
+	 * Appelé par les commandes du menu
+	 */
+	public void actionPerformed(ActionEvent evt) {
+		String action = evt.getActionCommand();
+
+		if (action.equals(ACTION_QUITTER)) {
+			System.exit(0);
+		} else if (action.equals(ACTION_GO)) {
+			go();
+		} else if (action.equals(ACTION_PAUSE)) {
+			pause();
+		} else if (action.equals(ACTION_REPRENDRE)) {
+			reprendre();
+		}
+	}
+
+	private void reprendre() {
+		for (Component obj : this.getContentPane().getComponents()) {
+			if (obj instanceof Bidule)
+				((Bidule) obj).start();
+		}
+	}
+
+	private void pause() {
+		for (Component obj : this.getContentPane().getComponents()) {
+			if (obj instanceof Bidule)
+				((Bidule) obj).stop();
+		}
+	}
 
 }// FentreMain
